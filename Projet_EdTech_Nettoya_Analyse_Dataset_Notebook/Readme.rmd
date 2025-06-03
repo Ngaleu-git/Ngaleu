@@ -1,0 +1,32 @@
+🌍 Analyse stratégique pour le développement international d'une entreprise EdTech
+
+Dans ce projet, nous analysons des données socio-économiques recensées aux États-Unis afin de guider une entreprise de l'EdTech dans sa stratégie de développement à l'international.
+L’objectif principal est d’identifier les villes les plus prometteuses pour l’implantation ou l’expansion de ses activités.
+
+L’approche se veut orientée données et prise de décision, en produisant des résultats à la fois actionnables et impactants. L’enjeu est de convaincre 
+un client en lui présentant un classement argumenté des villes, fondé sur des critères pertinents et une méthodologie rigoureuse.
+
+🎯 Compétences mobilisées
+🔍 Exploration et nettoyage de données : traitement des données brutes pour en extraire des informations fiables et exploitables.
+
+📊 Analyse exploratoire : identification de tendances, corrélations et insights pertinents.
+
+🧠 Synthèse décisionnelle : production de recommandations claires et orientées business.
+
+📈 Visualisation des résultats : mise en valeur des conclusions à travers des graphiques compréhensibles et percutants.
+
+🧰 Outils et technologies
+Python : langage principal utilisé pour l’analyse.
+
+Pandas : manipulation et nettoyage de données tabulaires.
+
+NumPy : calculs numériques et traitement de données.
+
+Matplotlib & Seaborn : visualisation de données.
+
+Jupyter Notebook : présentation interactive et reproductible des analyses.
+
+geopanda et folium : visualisation géographique des données.
+
+
+

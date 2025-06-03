@@ -1,0 +1,119 @@
+---
+title: "Analyse Inférentielle - Données Universitaires"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+```
+
+## 1. Importation et Exploration des Données
+
+```{r}
+# Importation des données
+universites <- read.csv("Projet_EdTech_Nettoya_Analyse_Dataset_Notebook/edtech_market_study_usa.csv", sep=",", head=TRUE)
+
+# Affichage de la structure des données
+str(universites)
+
+# Résumé statistique des variables numériques
+summary(universites)
+```
+
+## 2. Analyse Inférentielle
+
+### 2.1 Test de Normalité
+
+#### 2.1.1 QQ-Plot (Quantile-Quantile Plot)
+
+Le QQ-plot est un outil graphique pour évaluer la normalité des données. Il compare les quantiles observés aux quantiles théoriques d'une distribution normale.
+
+Pour un échantillon de taille n, les quantiles théoriques sont calculés comme suit :
+
+\[
+q_i = \Phi^{-1}\left(\frac{i - 0.5}{n}\right)
+\]
+
+où :
+- \(\Phi^{-1}\) est la fonction quantile de la distribution normale standard
+- i est le rang de l'observation (1 à n)
+- n est la taille de l'échantillon
+
+```{r}
+# QQ-plot pour le taux d'admission
+qqnorm(universites$TAUX_ADMISSION)
+qqline(universites$TAUX_ADMISSION)
+
+# QQ-plot pour le coût moyen
+qqnorm(universites$COUT_MOYEN_ANNEE_ACADEMIE)
+qqline(universites$COUT_MOYEN_ANNEE_ACADEMIE)
+```
+
+#### 2.1.2 Test de Shapiro-Wilk
+
+\[
+W = \frac{(\sum_{i=1}^n a_i x_{(i)})^2}{\sum_{i=1}^n (x_i - \bar{x})^2}
+\]
+
+```{r}
+# Test de Shapiro-Wilk sur le taux d'admission
+shapiro.test(universites$TAUX_ADMISSION)
+
+# Test de Shapiro-Wilk sur le coût moyen
+shapiro.test(universites$COUT_MOYEN_ANNEE_ACADEMIE)
+```
+
+### 2.2 Intervalles de Confiance
+
+#### 2.2.1 Théorie des Intervalles de Confiance
+
+Un intervalle de confiance à 95% est un intervalle qui contient la vraie valeur du paramètre avec une probabilité de 95%. 
+
+Pour une moyenne μ, l'intervalle de confiance à 95% est donné par :
+
+\[
+\bar{x} \pm 1.96 \frac{s}{\sqrt{n}}
+\]
+
+où :
+- \(\bar{x}\) est la moyenne de l'échantillon
+- s est l'écart-type de l'échantillon
+- n est la taille de l'échantillon
+- 1.96 est la valeur critique pour un niveau de confiance de 95%
+
+```{r}
+# Intervalle de confiance pour le taux d'admission moyen
+t.test(universites$TAUX_ADMISSION, conf.level = 0.95)
+
+# Intervalle de confiance pour le coût moyen
+t.test(universites$COUT_MOYEN_ANNEE_ACADEMIE, conf.level = 0.95)
+```
+
+### 2.3 Régression Linéaire Simple
+
+#### 2.3.1 Théorie de la Régression Linéaire
+
+Le modèle de régression linéaire simple est :
+
+\[
+Y = \beta_0 + \beta_1X + \epsilon
+\]
+
+où :
+- Y est la variable dépendante
+- X est la variable explicative
+- \(\beta_0\) est l'ordonnée à l'origine
+- \(\beta_1\) est la pente
+- \(\epsilon\) est l'erreur aléatoire
+
+```{r}
+# Régression linéaire : Coût moyen en fonction du taux d'admission
+modele <- lm(COUT_MOYEN_ANNEE_ACADEMIE ~ TAUX_ADMISSION, data = universites)
+summary(modele)
+
+# Vérification des hypothèses
+par(mfrow = c(2,2))
+plot(modele)
+``` 

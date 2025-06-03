@@ -1,0 +1,69 @@
+
+fileName="https://pmbo-sd.fr/STID/Reporting_et_datavisualisation/exemple_de_banque_de_mots.csv"
+X=read.delim(fileName,header=TRUE,sep=";",dec=",",stringsAsFactors = TRUE)
+dim(X) # 59 12
+somme(X$TPU) # 1268.989 XXX
+
+noms de colonnes(X)
+
+###
+X$PIB_H=X$PIB/X$POP
+X$CO2_H=X$CO2/X$POP
+X$POP15_H=X$POP15/X$POP
+
+
+################ graphique A
+
+par(bg="ardoise",fg="cyan")
+g=barplot(X$PIB,horiz=TRUE,col="red",main="PIB par habitant (US$ courant)",col.main="white",col.axis="white")
+texte(X$PIB,g,X$PAYS,xpd=NA,pos=2,col="jaune",cex=0.75)
+
+
+################ graphique B deux variables simultanées
+
+par(bg="ardoise",fg="cyan")
+g=barplot(rbind(X$TPU/100,X$POP15_H),main="Monde",
+          à côté = VRAI, horiz = VRAI, col = c ("jaune", "orange"), col.main = "blanc", col.axis = "blanc", bordure = NA)
+texte(0,g[2,],X$PAYS,pos=2,cex=0.75,xpd=NA,col="jaune")
+
+légende("en haut à droite",c("% pop. urbaine","% popu. - 15 ans"),pch=15,
+       cex=1,texte.col=c("jaune","orange"),col=c("jaune","orange"))
+
+################ graphique C
+
+par(bg="ardoise",fg="cyan")
+filtre = X$Continent == "Asie"
+g=barplot(rbind(X$TPU[filtre]/100,X$POP15_H[filtre]),main="Asie",
+          à côté=VRAI,horiz=VRAI,col=c("jaune","orange"))
+texte(0,g[2,],X$PAYS[filtre],pos=4,cex=0.75,xpd=NA,col="darkblue")
+
+légende("en haut à droite",c("% pop. urbaine","% popu. - 15 ans"),pch=15,
+       cex=1.25,text.col=c("jaune","orange"),col=c("jaune","orange"))
+
+################ graphique D pie
+
+par(bg="ardoise",fg="cyan")
+ind=order(X$CO2_H,decreasing=TRUE)[1:10]
+tarte(X$PIB[ind],étiquettes=X$PAYS[ind],col=arc-en-ciel(10),
+    main="PIB par habitant\ndes 10 PAYS à + forte émission de CO2",
+    col.main="blanc")
+
+################ graphique E plot (2 VAR) ...nuage de points
+
+par(bg="ardoise",fg="cyan")
+plot(X$NAISS,X$DMV,pch=15,main="Naissances & Espérance de vie",
+     xlab="Naissances",ylab="Espérance de vie",cex=1,
+     col="cyan")
+texte(X$NAISS,X$DMV,X$PAYS,pos=3,cex=0.75,col="jaune",xpd=NA)
+
+reg=lm(X$DMV~X$NAISS)
+abline(reg,col="blanc")
+résumé(reg)
+noms(résumé(reg))
+résumé(reg)$r.squared
+
+reg$coefficients[1]
+reg$coefficients[2]
+
+w=paste("Régression\nDMV = a.NAISS + b ; R2 : ",100*round(summary(reg)$r.squared,4)," %",sep="")
+texte(6,55,w,col="blanc",pos=4)
